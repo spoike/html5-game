@@ -2,5 +2,5 @@ requirejs.config({
 	baseUrl: 'scripts/game'
 });
 
-define(['game'], function() {
+define(['utils', 'game'], function() {
 });

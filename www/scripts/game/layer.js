@@ -12,17 +12,13 @@ define([], function() {
 		this.context.drawImage(this.spriteAtlas, idx*16, idy*16, 16, 16, x, y, 16*scale, 16*scale);
 	};
 	
-	exports.loadLayer = function(src, cbDone) {
+	exports.createLayer = function(atlas) {
 		var canvas = document.getElementById('game');
 		if (canvas.getContext) {
 			var context = canvas.getContext('2d');
 			context.webkitImageSmoothingEnabled = false;
 		}
-		var atlas = new Image();
-		atlas.onload = function() {
-			cbDone(new Layer(context, atlas));
-		};
-		atlas.src = src;
+		return new Layer(context, atlas);
 	};
 	
 	return exports;
