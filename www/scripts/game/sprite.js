@@ -19,10 +19,18 @@ define([], function() {
 			x, y, 
 			this.w*this.scale, this.h*this.scale);
 	};
-	
-	exports.create16 = function(atlas, idx, idy) {
-		return new Sprite(atlas, idx, idy, 16, 16);
+
+	var defaultW = 16;
+
+	exports.setDefaultWidth = function(w) {
+		defaultW = w;
 	};
 	
+	exports.create = function(atlas, idx, idy, w, h) {
+		w = w || defaultW;    // default: 16 px width
+		h = h || w; // default: square
+		return new Sprite(atlas, idx, idy, w, h);
+	};
+
 	return exports;
 });

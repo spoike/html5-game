@@ -1,4 +1,4 @@
-define(['layer', 'random', 'preloader', 'objs/happy'], function(layerManager, r, preloader, objs) {
+define(['random', 'preloader', 'objs/happy', 'objs/background'], function(r, preloader, objs, backgrounds) {
 	
 	// TODO: Implement game loop
 	// http://www.html5rocks.com/en/tutorials/canvas/notearsgame/
@@ -29,12 +29,7 @@ define(['layer', 'random', 'preloader', 'objs/happy'], function(layerManager, r,
 		var i;
 
 		/* Draw map */
-		var x = 0, y = 0;
-		for (x = 0; x < 25; x++) {
-			for (y = 0; y < 25; y++) {
-				l.drawSprite(0, 0, 16*x, 16*y);
-			}
-		}
+		bg.render(ctx);
 
 		for (i = 0; i < sprites.length; i++) {
 			sprites[i].render(ctx);
@@ -42,11 +37,9 @@ define(['layer', 'random', 'preloader', 'objs/happy'], function(layerManager, r,
 	};
 	
 	var sprites = [];
-	var l;
+	var bg;
 	
 	preloader.loadImages(['/img/sheet.png'], function(imgs) {
-		l = layerManager.createLayer(imgs[0]);
-		
 		var FPS = 30;
 		var interval = 1000/FPS;
 		var canvas = document.getElementById('game');
@@ -62,6 +55,8 @@ define(['layer', 'random', 'preloader', 'objs/happy'], function(layerManager, r,
 			render(ctx);
 		}, interval);
 		
+		bg = backgrounds.create(imgs[0]);
+
 		for (i = 0; i < 5; i++) {
 			var s = new objs.Happy(imgs[0]);
 			sprites.push(s);

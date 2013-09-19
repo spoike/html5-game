@@ -4,8 +4,8 @@ define(['sprite', 'random'], function(sprite, r) {
 	
 	var Happy = exports.Happy = function(atlas) {
 		this.atlas = atlas;
-		this.happy = new sprite.create16(atlas, 1, 0);
-		this.squished = new sprite.create16(atlas, 1, 1);
+		this.happy = sprite.create(atlas, 1, 0);
+		this.squished = sprite.create(atlas, 1, 1);
 		this.x = 16*r.getRandomInt(0, 24);
 		this.y = 16*r.getRandomInt(0, 24);
 		this.isDead = false;
