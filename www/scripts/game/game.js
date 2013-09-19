@@ -8,13 +8,21 @@ define(['layer', 'random', 'preloader', 'objs/happy'], function(layerManager, r,
 	// http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
 	
 	var update = function() {
-		var i;
+		var i, sprite, allDead = true;
 		
 		for(i = 0; i < sprites.length; i++) {
-			var sprite = sprites[i];
-			if (!sprite.isDead) sprite.x = (sprite.x+1).clamp(0, 380);
+			sprite = sprites[i];
+			sprite.update();
+			allDead &= sprite.isDead;
 		}
-		
+
+		if (allDead) {
+			for(i = 0; i < sprites.length; i++) {
+				sprite = sprites[i];
+				sprite.isDead = false;
+			}
+		}
+
 	};
 	
 	var render = function(ctx) {
@@ -56,8 +64,6 @@ define(['layer', 'random', 'preloader', 'objs/happy'], function(layerManager, r,
 		
 		for (i = 0; i < 5; i++) {
 			var s = new objs.Happy(imgs[0]);
-			s.x = 16*r.getRandomInt(0, 24);
-			s.y = 16*r.getRandomInt(0, 24);
 			sprites.push(s);
 		};
 		
