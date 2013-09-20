@@ -1,4 +1,4 @@
-define(['random', 'preloader', 'objs/happy', 'objs/background'], function(r, preloader, objs, backgrounds) {
+define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor'], function(r, preloader, objs, backgrounds, cursors) {
 	
 	// TODO: Implement game loop
 	// http://www.html5rocks.com/en/tutorials/canvas/notearsgame/
@@ -34,11 +34,14 @@ define(['random', 'preloader', 'objs/happy', 'objs/background'], function(r, pre
 		for (i = 0; i < sprites.length; i++) {
 			sprites[i].render(ctx);
 		}
+
+		cursor.render(ctx);
 	};
 	
 	var sprites = [];
 	var bg;
-	
+	var cursor;
+
 	preloader.loadImages(['/img/sheet.png'], function(imgs) {
 		var FPS = 30;
 		var interval = 1000/FPS;
@@ -55,13 +58,17 @@ define(['random', 'preloader', 'objs/happy', 'objs/background'], function(r, pre
 			render(ctx);
 		}, interval);
 		
+		// Create background
 		bg = backgrounds.create(imgs[0]);
-
+		// Create sprites
 		for (i = 0; i < 5; i++) {
 			var s = new objs.Happy(imgs[0]);
 			sprites.push(s);
 		};
+		// Create cursor
+		cursor = cursors.create(imgs[0]);
 		
+		// Set up user events
 		var canvas = document.getElementById('game');
 		canvas.addEventListener('click', function(evt) {
 			var x = evt.offsetX - canvas.offsetLeft + 8;
@@ -71,6 +78,22 @@ define(['random', 'preloader', 'objs/happy', 'objs/background'], function(r, pre
 			for (i = 0; i < sprites.length; i++) {
 				sprites[i].hit(x, y);
 			}
+		});
+
+		canvas.addEventListener('mouseout', function(evt) {
+			cursor.isVisible = false;
+		});
+
+		canvas.addEventListener('mouseover', function(evt) {
+			cursor.isVisible = true;
+		});
+
+		document.addEventListener('mousemove', function(evt) {
+			var x = evt.offsetX - canvas.offsetLeft;
+			var y = evt.offsetY - canvas.offsetTop - 16;
+
+			cursor.x = x;
+			cursor.y = y;
 		});
 	});
 		
