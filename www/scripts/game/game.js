@@ -26,13 +26,18 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor'], 
 	};
 	
 	var render = function(ctx) {
-		var i;
+		var i, sprite;
 
 		/* Draw map */
 		bg.render(ctx);
 
 		for (i = 0; i < sprites.length; i++) {
-			sprites[i].render(ctx);
+			sprite = sprites[i];
+			if (sprite.isDead) sprite.render(ctx);
+		}
+		for (i = 0; i < sprites.length; i++) {
+			sprite = sprites[i];
+			if (!sprite.isDead) sprite.render(ctx);
 		}
 
 		cursor.render(ctx);
@@ -61,7 +66,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor'], 
 		// Create background
 		bg = backgrounds.create(imgs[0]);
 		// Create sprites
-		for (i = 0; i < 5; i++) {
+		for (i = 0; i < 128; i++) {
 			var s = new objs.Happy(imgs[0]);
 			sprites.push(s);
 		};
