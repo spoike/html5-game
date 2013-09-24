@@ -30,9 +30,11 @@ define(['sprite', 'random'], function(sprite, r) {
 			this.squished.render(ctx, this.x, this.y);
 		}
 	};
-	
+
+	var hitDiameter = 32;	
 	Happy.prototype.hit = function(x, y) {
-		if (x >= this.x-16 && y >= this.y-16 && x <= this.x+16 && y <= this.y+16) {
+		var d = Math.sqrt(Math.pow(x-(this.x+8), 2)+Math.pow(y-(this.y+8), 2));
+		if (d <= hitDiameter) {
 			this.isDead = true;
 		}
 	};

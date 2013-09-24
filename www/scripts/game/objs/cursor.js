@@ -10,7 +10,7 @@ define(['sprite'], function(s) {
 	};
 
 	Cursor.prototype.render = function(ctx) {
-		if (this.isVisible) this.sprite.render(ctx, this.x, this.y - 16);
+		if (this.isVisible) this.sprite.render(ctx, this.x-16, this.y - 16);
 	};
 
 	exports.create = function(atlas) {
