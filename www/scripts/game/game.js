@@ -18,6 +18,8 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 			allDead &= sprite.isDead;
 		}
 
+		gameUi.update();
+
 		if (allDead) {
 			gameUi.isGameOver = true;
 		}
@@ -96,9 +98,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 				}
 			}
 			score *= score;
-			for (i = 0; i < score; i++) {
-				ui.incrScore();
-			}
+			ui.incrScore(score);
 
 			if (gameUi.isGameOver) {
 				for(i = 0; i < sprites.length; i++) {

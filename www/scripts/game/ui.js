@@ -19,6 +19,7 @@ define(['sprite'], function(s) {
 	};
 
 	var score = 0;
+	var visibleScore = 0;
 
 	UI.prototype.writeText = function(ctx, str, x, y) {
 		textIdxs = toIndexArr(str);
@@ -32,6 +33,12 @@ define(['sprite'], function(s) {
 		};
 	};
 
+	UI.prototype.update = function() {
+		if (visibleScore < score) {
+			visibleScore++;
+		}
+	};
+
 	UI.prototype.writeTextCenter = function(ctx, str, y) {
 		var w = ctx.canvas.width;
 		beginx = (w/2)-((str.length-1)*8);
@@ -43,7 +50,7 @@ define(['sprite'], function(s) {
 		var i, charIdx, text, w, h, beginy;
 
 		if (!this.isGameOver) {
-			this.writeText(ctx, 'Score: ' + score, 10, 10);
+			this.writeText(ctx, 'Score: ' + visibleScore, 10, 10);
 		}
 		else {
 			w = ctx.canvas.width;
@@ -62,10 +69,11 @@ define(['sprite'], function(s) {
 
 	exports.setScore = function(s) {
 		score = s;
+		visibleScore = s;
 	};
 
-	exports.incrScore = function() {
-		score++;
+	exports.incrScore = function(s) {
+		score += s;
 	};
 
 	exports.create = function(atlas) {
