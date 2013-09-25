@@ -83,6 +83,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 			var x = evt.offsetX;
 			var y = evt.offsetY;
 			var sprite;
+			var score = 0;
 			
 			var i;
 			for (i = 0; i < sprites.length; i++) {
@@ -90,9 +91,13 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 				if (!sprite.isDead) {
 					sprite.hit(x, y);
 					if (sprite.isDead) {
-						ui.incrScore();
+						score++;
 					}
 				}
+			}
+			score *= score;
+			for (i = 0; i < score; i++) {
+				ui.incrScore();
 			}
 
 			if (gameUi.isGameOver) {

@@ -32,9 +32,15 @@ define(['sprite'], function(s) {
 		};
 	};
 
+	UI.prototype.writeTextCenter = function(ctx, str, y) {
+		var w = ctx.canvas.width;
+		beginx = (w/2)-((str.length-1)*8);
+		this.writeText(ctx, str, beginx, y);
+	};
+
 	UI.prototype.render = function(ctx) {
 
-		var i, charIdx, text, w, h, beginx, beginy;
+		var i, charIdx, text, w, h, beginy;
 
 		if (!this.isGameOver) {
 			this.writeText(ctx, 'Score: ' + score, 10, 10);
@@ -45,24 +51,9 @@ define(['sprite'], function(s) {
 			ctx.save();
 			ctx.fillStyle = "rgba(0,0,0,0.4)";
 			ctx.fillRect(0, 0, w, h);
-			text = 'Game Over';
-			beginx = (w/2)-((text.length-1)*8);
-			beginy = h/2-16;
-			this.writeText(ctx, text, beginx, beginy);
-
-			/*
-			textIdxs = toIndexArr('Game Over');
-			beginx = (w/2)-((textIdxs.length-1)*8);
-			beginy = h/2-16;
-			for (i = 0; i < textIdxs.length; i++) {
-				charIdx = textIdxs[i];
-				ctx.drawImage(this.atlas,
-					charIdx[0]*16, (16+charIdx[1])*16,
-					16, 16,
-					beginx+(i*16),beginy,
-					16, 16);
-			};*/
-
+			beginy = h/2-24;
+			this.writeTextCenter(ctx, 'Game Over', beginy);
+			this.writeTextCenter(ctx, 'Your score: ' + score, beginy + 18);
 
 			ctx.restore();
 		}
