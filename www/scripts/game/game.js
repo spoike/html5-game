@@ -1,13 +1,18 @@
 define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', 'ui'], function(r, preloader, objs, backgrounds, cursors, ui) {
 	
+	// requestAnimationFrame polyfill
+	(function() {
+	  var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+	                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	  window.requestAnimationFrame = requestAnimationFrame;
+	})();
+
 	// TODO: Implement game loop
 	// http://www.html5rocks.com/en/tutorials/canvas/notearsgame/
-	// TODO: Use requestAnimationFrame instead to iterate render
-	// http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
 	// TODO: Use translate to move objects around?
 	// http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
 	
-	var happyFaceAmount = 10;
+	var happyFaceAmount = 25;
 
 	var update = function() {
 		var i, sprite, allDead = true;
@@ -45,27 +50,30 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 
 		gameUi.render(ctx);
 	};
+
+	var gameLoop = function(time) {
+		update();
+		render(ctx);
+		window.requestAnimationFrame(gameLoop);
+	};
 	
 	var sprites = [];
 	var bg;
 	var cursor;
 	var gameUi;
+	var ctx;
 
 	preloader.loadImages(['/img/sheet.png'], function(imgs) {
 		var FPS = 30;
 		var interval = 1000/FPS;
 		var canvas = document.getElementById('game');
-		var ctx;
 		if (!canvas.getContext) {
 			return; 
 		}
 		
 		ctx = canvas.getContext('2d');
 
-		window.setInterval(function() {
-			update();
-			render(ctx);
-		}, interval);
+		window.requestAnimationFrame(gameLoop);
 		
 		// Create background
 		bg = backgrounds.create(imgs[0]);
@@ -98,7 +106,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 				}
 			}
 			score *= score;
-			ui.incrScore(score);
+			ui.incrScore(score*50);
 
 			if (gameUi.isGameOver) {
 				for(i = 0; i < sprites.length; i++) {

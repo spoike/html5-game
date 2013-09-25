@@ -20,6 +20,7 @@ define(['sprite'], function(s) {
 
 	var score = 0;
 	var visibleScore = 0;
+	var step = 1;
 
 	UI.prototype.writeText = function(ctx, str, x, y) {
 		textIdxs = toIndexArr(str);
@@ -35,7 +36,12 @@ define(['sprite'], function(s) {
 
 	UI.prototype.update = function() {
 		if (visibleScore < score) {
-			visibleScore++;
+			visibleScore += step;
+			step *= 1.2;
+			visibleScore = Math.floor(visibleScore);
+		} else if (visibleScore > score) {
+			step = 1;
+			visibleScore = score;
 		}
 	};
 
@@ -59,7 +65,7 @@ define(['sprite'], function(s) {
 			ctx.fillStyle = "rgba(0,0,0,0.4)";
 			ctx.fillRect(0, 0, w, h);
 			beginy = h/2-24;
-			this.writeTextCenter(ctx, 'Game Over', beginy);
+			this.writeTextCenter(ctx, 'YOU WIN!', beginy);
 			this.writeTextCenter(ctx, 'Your score: ' + score, beginy + 18);
 
 			ctx.restore();
