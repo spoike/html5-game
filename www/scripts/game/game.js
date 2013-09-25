@@ -7,6 +7,8 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 	// TODO: Use translate to move objects around?
 	// http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
 	
+	var happyFaceAmount = 10;
+
 	var update = function() {
 		var i, sprite, allDead = true;
 		
@@ -17,10 +19,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 		}
 
 		if (allDead) {
-			for(i = 0; i < sprites.length; i++) {
-				sprite = sprites[i];
-				sprite.isDead = false;
-			}
+			gameUi.isGameOver = true;
 		}
 
 	};
@@ -69,7 +68,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 		// Create background
 		bg = backgrounds.create(imgs[0]);
 		// Create sprites
-		for (i = 0; i < 128; i++) {
+		for (i = 0; i < happyFaceAmount; i++) {
 			var s = new objs.Happy(imgs[0]);
 			sprites.push(s);
 		};
@@ -94,6 +93,14 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 						ui.incrScore();
 					}
 				}
+			}
+
+			if (gameUi.isGameOver) {
+				for(i = 0; i < sprites.length; i++) {
+					sprite = sprites[i];
+					sprite.isDead = false;
+				}
+				gameUi.isGameOver = false;
 			}
 		});
 
