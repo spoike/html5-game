@@ -17,9 +17,11 @@ define(['sprite'], function(s) {
 		return a;
 	};
 
+	var score = 0;
+
 	UI.prototype.render = function(ctx) {
 
-		var i, charIdx, textIdxs = toIndexArr('SCORE: ' + 1);
+		var i, charIdx, textIdxs = toIndexArr('SCORE: ' + score);
 		for (i = 0; i < textIdxs.length; i++) {
 			charIdx = textIdxs[i];
 			ctx.drawImage(this.atlas,
@@ -28,7 +30,15 @@ define(['sprite'], function(s) {
 				10+(i*16),10,
 				16,16);
 		};
-		
+
+	};
+
+	exports.setScore = function(s) {
+		score = s;
+	};
+
+	exports.incrScore = function() {
+		score++;
 	};
 
 	exports.create = function(atlas) {

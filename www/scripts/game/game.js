@@ -83,10 +83,17 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 		canvas.addEventListener('click', function(evt) {
 			var x = evt.offsetX;
 			var y = evt.offsetY;
+			var sprite;
 			
 			var i;
 			for (i = 0; i < sprites.length; i++) {
-				sprites[i].hit(x, y);
+				sprite = sprites[i];
+				if (!sprite.isDead) {
+					sprite.hit(x, y);
+					if (sprite.isDead) {
+						ui.incrScore();
+					}
+				}
 			}
 		});
 
