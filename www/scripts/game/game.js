@@ -1,4 +1,4 @@
-define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor'], function(r, preloader, objs, backgrounds, cursors) {
+define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', 'ui'], function(r, preloader, objs, backgrounds, cursors, ui) {
 	
 	// TODO: Implement game loop
 	// http://www.html5rocks.com/en/tutorials/canvas/notearsgame/
@@ -41,11 +41,14 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor'], 
 		}
 
 		cursor.render(ctx);
+
+		gameUi.render(ctx);
 	};
 	
 	var sprites = [];
 	var bg;
 	var cursor;
+	var gameUi;
 
 	preloader.loadImages(['/img/sheet.png'], function(imgs) {
 		var FPS = 30;
@@ -72,6 +75,8 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor'], 
 		};
 		// Create cursor
 		cursor = cursors.create(imgs[0]);
+		// Create UI
+		gameUi = ui.create(imgs[0]);
 		
 		// Set up user events
 		var canvas = document.getElementById('game');
