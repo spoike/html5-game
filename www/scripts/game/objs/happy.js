@@ -46,6 +46,18 @@ define(['sprite', 'random'], function(sprite, r) {
 			this.isDead = true;
 		}
 	};
+
+	Happy.prototype.impact = function(x, y) {
+		var d = Math.distance(this.x, x, this.y, y);
+		if (d < 100) {
+			var vx = this.x - x;
+			var vy = this.y - y;
+			var div = Math.max(x, y);
+			var pow = 500/d;
+			this.vx = vx * pow / div;
+			this.vy = vy * pow / div;
+		}
+	};
 	
 	return exports;
 	

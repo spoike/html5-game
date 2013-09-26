@@ -109,6 +109,14 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 			score *= score;
 			ui.incrScore(score*50, x, y);
 
+			// impact the close by faces
+			for(i = 0; i < sprites.length; i++) {
+				sprite = sprites[i];
+				if (!sprite.isDead) {
+					sprite.impact(x, y);
+				}
+			}
+
 			if (gameUi.isGameOver) {
 				for(i = 0; i < sprites.length; i++) {
 					sprite = sprites[i];
