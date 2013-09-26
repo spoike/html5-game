@@ -11,6 +11,7 @@ define(['text'], function(text) {
 	var visibleScore = 0;
 	var step = 1;
 	var flair = [];
+	var hits = [];
 
 	UI.prototype.update = function() {
 		if (visibleScore < score) {
@@ -29,6 +30,7 @@ define(['text'], function(text) {
 
 		ctx.save();
 
+		// score flairs
 		for (i = 0; i < flair.length; i++) {
 			f = flair[i];
 			f[2] = f[2]+1;
@@ -39,6 +41,30 @@ define(['text'], function(text) {
 		}
 		if(toRemove > 0) {
 			flair.splice(0,toRemove);
+		}
+		toRemove = 0;
+
+		// hit flairs
+		for (i = 0; i < hits.length; i++) {
+			f = hits[i];
+			f[2] = f[2]+1;
+			// draw circle
+			ctx.beginPath();
+			ctx.fillStyle = "rgba(255,255,255,0.2)";
+	    	ctx.arc(f[0], f[1], 5*f[2], 0, 2 * Math.PI, false);
+			ctx.closePath();
+    		ctx.fill();
+			ctx.beginPath();
+			ctx.fillStyle = "rgba(255,150,150,0.4)";
+	    	ctx.arc(f[0], f[1], 2*f[2], 0, 2 * Math.PI, false);
+			ctx.closePath();
+    		ctx.fill();
+			if (f[2] > 8) {
+				toRemove++;
+			};
+		}
+		if(toRemove > 0) {
+			hits.splice(0,toRemove);
 		}
 
 		if (!this.isGameOver) {
@@ -68,6 +94,10 @@ define(['text'], function(text) {
 			score += s;
 			flair.push([x, y, 0, s]);
 		}
+	};
+
+	exports.hit = function(x, y) {
+		hits.push([x, y, 0]);
 	};
 
 	exports.create = function(atlas) {

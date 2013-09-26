@@ -49,7 +49,7 @@ define(['sprite', 'random'], function(sprite, r) {
 
 	Happy.prototype.impact = function(x, y) {
 		var d = Math.distance(this.x, x, this.y, y);
-		if (d < 100) {
+		if (d < 132) {
 			var vx = this.x - x;
 			var vy = this.y - y;
 			var div = Math.max(x, y);
