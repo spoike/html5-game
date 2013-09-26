@@ -1,4 +1,4 @@
-define(['sprite', 'text'], function(s, text) {
+define(['text'], function(text) {
 
 	var exports = {};
 
