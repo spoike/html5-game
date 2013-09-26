@@ -63,7 +63,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 	var gameUi;
 	var ctx;
 
-	preloader.loadImages(['/img/sheet.png'], function(imgs) {
+	preloader.loadImages(['img/sheet.png'], function(imgs) {
 		var FPS = 30;
 		var interval = 1000/FPS;
 		var canvas = document.getElementById('game');
