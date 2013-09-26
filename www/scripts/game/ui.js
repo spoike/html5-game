@@ -7,27 +7,18 @@ define(['sprite'], function(s) {
 		this.isGameOver = false;
 	};
 
-	var toIndexArr = function(str) {
-		var i, c, a = [];
-
-		for (i = 0; i < str.length; i++) {
-			c = str.charCodeAt(i);
-			a.push([c%16,Math.floor(c/16)]);
-		};
-
-		return a;
-	};
-
 	var score = 0;
 	var visibleScore = 0;
 	var step = 1;
 
 	UI.prototype.writeText = function(ctx, str, x, y) {
-		textIdxs = toIndexArr(str);
-		for (i = 0; i < textIdxs.length; i++) {
-			charIdx = textIdxs[i];
+		var i, c, cx, cy;
+		for (i = 0; i < str.length; i++) {
+			c = str.charCodeAt(i);
+			cx = c%16;
+			cy = Math.floor(c/16);
 			ctx.drawImage(this.atlas,
-				charIdx[0]*16, (16+charIdx[1])*16,
+				cx*16, (16+cy)*16,
 				16,16,
 				x+(i*16),y,
 				16,16);
