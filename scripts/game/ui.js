@@ -1,4 +1,4 @@
-define(['sprite'], function(s) {
+define(['text'], function(text) {
 
 	var exports = {};
 
@@ -7,32 +7,11 @@ define(['sprite'], function(s) {
 		this.isGameOver = false;
 	};
 
-	var toIndexArr = function(str) {
-		var i, c, a = [];
-
-		for (i = 0; i < str.length; i++) {
-			c = str.charCodeAt(i);
-			a.push([c%16,Math.floor(c/16)]);
-		};
-
-		return a;
-	};
-
 	var score = 0;
 	var visibleScore = 0;
 	var step = 1;
-
-	UI.prototype.writeText = function(ctx, str, x, y) {
-		textIdxs = toIndexArr(str);
-		for (i = 0; i < textIdxs.length; i++) {
-			charIdx = textIdxs[i];
-			ctx.drawImage(this.atlas,
-				charIdx[0]*16, (16+charIdx[1])*16,
-				16,16,
-				x+(i*16),y,
-				16,16);
-		};
-	};
+	var flair = [];
+	var hits = [];
 
 	UI.prototype.update = function() {
 		if (visibleScore < score) {
@@ -45,32 +24,64 @@ define(['sprite'], function(s) {
 		}
 	};
 
-	UI.prototype.writeTextCenter = function(ctx, str, y) {
-		var w = ctx.canvas.width;
-		beginx = (w/2)-((str.length-1)*8);
-		this.writeText(ctx, str, beginx, y);
-	};
-
 	UI.prototype.render = function(ctx) {
 
-		var i, charIdx, text, w, h, beginy;
+		var i, w, h, beginy, f, toRemove = 0;
+
+		ctx.save();
+
+		// score flairs
+		for (i = 0; i < flair.length; i++) {
+			f = flair[i];
+			f[2] = f[2]+1;
+			text.write(ctx, '+' + f[3], f[0]-16, f[1]-(f[2]*0.20)-32);
+			if (f[2] > 40) {
+				toRemove++;
+			}
+		}
+		if(toRemove > 0) {
+			flair.splice(0,toRemove);
+		}
+		toRemove = 0;
+
+		// hit flairs
+		for (i = 0; i < hits.length; i++) {
+			f = hits[i];
+			f[2] = f[2]+1;
+			// draw circle
+			ctx.beginPath();
+			ctx.fillStyle = "rgba(255,255,255,0.2)";
+	    	ctx.arc(f[0], f[1], 5*f[2], 0, 2 * Math.PI, false);
+			ctx.closePath();
+    		ctx.fill();
+			ctx.beginPath();
+			ctx.fillStyle = "rgba(255,150,150,0.4)";
+	    	ctx.arc(f[0], f[1], 2*f[2], 0, 2 * Math.PI, false);
+			ctx.closePath();
+    		ctx.fill();
+			if (f[2] > 8) {
+				toRemove++;
+			};
+		}
+		if(toRemove > 0) {
+			hits.splice(0,toRemove);
+		}
 
 		if (!this.isGameOver) {
-			this.writeText(ctx, 'Score: ' + visibleScore, 10, 10);
+			text.write(ctx, 'Score: ' + visibleScore, 10, 10);
 		}
 		else {
 			w = ctx.canvas.width;
 			h = ctx.canvas.height;
-			ctx.save();
 			ctx.fillStyle = "rgba(0,0,0,0.4)";
 			ctx.fillRect(0, 0, w, h);
 			beginy = h/2-24;
-			this.writeTextCenter(ctx, 'YOU WIN!', beginy);
-			this.writeTextCenter(ctx, 'Your score: ' + score, beginy + 18);
+			text.writeCenter(ctx, 'YOU WIN!', beginy);
+			text.writeCenter(ctx, 'Your score: ' + score, beginy + 18);
 
-			ctx.restore();
 		}
 
+		ctx.restore();
 	};
 
 	exports.setScore = function(s) {
@@ -78,8 +89,15 @@ define(['sprite'], function(s) {
 		visibleScore = s;
 	};
 
-	exports.incrScore = function(s) {
-		score += s;
+	exports.incrScore = function(s, x, y) {
+		if (s > 0) {
+			score += s;
+			flair.push([x, y, 0, s]);
+		}
+	};
+
+	exports.hit = function(x, y) {
+		hits.push([x, y, 0]);
 	};
 
 	exports.create = function(atlas) {

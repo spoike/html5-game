@@ -2,6 +2,14 @@ define(['sprite', 'random'], function(sprite, r) {
 
 	var exports = {};
 	
+	var getRandomVelocity = function() {
+		var v = r.getRandomInt(1, 3);
+		if (r.getRandomInt(0, 1) === 0) {
+			v = 0-v;
+		}
+		return v;
+	};
+
 	var Happy = exports.Happy = function(atlas) {
 		this.atlas = atlas;
 		this.happy = sprite.create(atlas, 1, 0);
@@ -9,8 +17,8 @@ define(['sprite', 'random'], function(sprite, r) {
 		this.x = 16*r.getRandomInt(0, 24);
 		this.y = 16*r.getRandomInt(0, 24);
 		this.isDead = false;
-		this.vx = r.getRandomInt(-2, 2);
-		this.vy = r.getRandomInt(-2, 2);
+		this.vx = getRandomVelocity();
+		this.vy = getRandomVelocity();
 	};
 
 	Happy.prototype.update = function() {
@@ -36,6 +44,18 @@ define(['sprite', 'random'], function(sprite, r) {
 		var d = Math.sqrt(Math.pow(x-(this.x+8), 2)+Math.pow(y-(this.y+8), 2));
 		if (d <= hitDiameter) {
 			this.isDead = true;
+		}
+	};
+
+	Happy.prototype.impact = function(x, y) {
+		var d = Math.distance(this.x, x, this.y, y);
+		if (d < 132) {
+			var vx = this.x - x;
+			var vy = this.y - y;
+			var div = Math.max(x, y);
+			var pow = 500/d;
+			this.vx = vx * pow / div;
+			this.vy = vy * pow / div;
 		}
 	};
 	

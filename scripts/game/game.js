@@ -1,4 +1,4 @@
-define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', 'ui'], function(r, preloader, objs, backgrounds, cursors, ui) {
+define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', 'ui', 'text'], function(r, preloader, objs, backgrounds, cursors, ui, text) {
 	
 	// requestAnimationFrame polyfill
 	(function() {
@@ -85,6 +85,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 		// Create cursor
 		cursor = cursors.create(imgs[0]);
 		// Create UI
+		text.init(imgs[0]);
 		gameUi = ui.create(imgs[0]);
 		
 		// Set up user events
@@ -106,7 +107,16 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 				}
 			}
 			score *= score;
-			ui.incrScore(score*50);
+			ui.incrScore(score*50, x, y);
+			ui.hit(x, y);
+
+			// impact the close by faces
+			for(i = 0; i < sprites.length; i++) {
+				sprite = sprites[i];
+				if (!sprite.isDead) {
+					sprite.impact(x, y);
+				}
+			}
 
 			if (gameUi.isGameOver) {
 				for(i = 0; i < sprites.length; i++) {
