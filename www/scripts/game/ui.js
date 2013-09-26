@@ -10,6 +10,7 @@ define(['text'], function(text) {
 	var score = 0;
 	var visibleScore = 0;
 	var step = 1;
+	var flair = [];
 
 	UI.prototype.update = function() {
 		if (visibleScore < score) {
@@ -24,9 +25,21 @@ define(['text'], function(text) {
 
 	UI.prototype.render = function(ctx) {
 
-		var i, w, h, beginy;
+		var i, w, h, beginy, f, toRemove = 0;
 
 		ctx.save();
+
+		for (i = 0; i < flair.length; i++) {
+			f = flair[i];
+			f[2] = f[2]+1;
+			text.write(ctx, '+' + f[3], f[0]-16, f[1]-(f[2]*0.20)-32);
+			if (f[2] > 40) {
+				toRemove++;
+			}
+		}
+		if(toRemove > 0) {
+			flair.splice(0,toRemove);
+		}
 
 		if (!this.isGameOver) {
 			text.write(ctx, 'Score: ' + visibleScore, 10, 10);
@@ -50,8 +63,11 @@ define(['text'], function(text) {
 		visibleScore = s;
 	};
 
-	exports.incrScore = function(s) {
-		score += s;
+	exports.incrScore = function(s, x, y) {
+		if (s > 0) {
+			score += s;
+			flair.push([x, y, 0, s]);
+		}
 	};
 
 	exports.create = function(atlas) {

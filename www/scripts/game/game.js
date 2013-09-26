@@ -107,7 +107,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 				}
 			}
 			score *= score;
-			ui.incrScore(score*50);
+			ui.incrScore(score*50, x, y);
 
 			if (gameUi.isGameOver) {
 				for(i = 0; i < sprites.length; i++) {
