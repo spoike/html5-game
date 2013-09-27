@@ -12,7 +12,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 	// TODO: Use translate to move objects around?
 	// http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
 	
-	var happyFaceAmount = 25;
+	var happyFaceAmount = 50;
 
 	var update = function() {
 		var i, sprite, allDead = true;
@@ -91,8 +91,8 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 		// Set up user events
 		var canvas = document.getElementById('game');
 		canvas.addEventListener('click', function(evt) {
-			var x = evt.offsetX;
-			var y = evt.offsetY;
+			var x = evt.offsetX || (evt.pageX - canvas.offsetLeft);
+			var y = evt.offsetY || (evt.pageY - canvas.offsetTop);
 			var sprite;
 			var score = 0;
 			
@@ -107,7 +107,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 				}
 			}
 			score *= score;
-			ui.incrScore(score*50, x, y);
+			ui.incrScore(score*125, x, y);
 			ui.hit(x, y);
 
 			// impact the close by faces
@@ -136,9 +136,10 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 			cursor.isVisible = true;
 		});
 
-		document.addEventListener('mousemove', function(evt) {
-			var x = evt.offsetX;
-			var y = evt.offsetY;
+		canvas.addEventListener('mousemove', function(evt) {
+			cursor.isVisible = true;
+			var x = evt.offsetX || (evt.pageX - canvas.offsetLeft);
+			var y = evt.offsetY || (evt.pageY - canvas.offsetTop);
 
 			cursor.x = x;
 			cursor.y = y;
