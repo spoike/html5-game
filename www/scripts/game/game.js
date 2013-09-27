@@ -107,7 +107,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 				}
 			}
 			score *= score;
-			ui.incrScore(score*50, x, y);
+			ui.incrScore(score*125, x, y);
 			ui.hit(x, y);
 
 			// impact the close by faces
