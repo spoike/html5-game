@@ -39,7 +39,7 @@ define(['sprite', 'random'], function(sprite, r) {
 		}
 	};
 
-	var hitDiameter = 32;	
+	var hitDiameter = 38;
 	Happy.prototype.hit = function(x, y) {
 		var d = Math.sqrt(Math.pow(x-(this.x+8), 2)+Math.pow(y-(this.y+8), 2));
 		if (d <= hitDiameter) {
