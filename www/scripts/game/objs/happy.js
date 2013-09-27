@@ -1,7 +1,7 @@
 define(['sprite', 'random'], function(sprite, r) {
 
 	var exports = {};
-	
+
 	var getRandomVelocity = function() {
 		var v = r.getRandomInt(1, 3);
 		if (r.getRandomInt(0, 1) === 0) {
@@ -27,6 +27,12 @@ define(['sprite', 'random'], function(sprite, r) {
 		if (!this.isDead) {
 			this.x = (this.x+this.vx).clamp(0, 380);
 			this.y = (this.y+this.vy).clamp(0, 380);
+
+			d = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+			if (d > 3) {
+				this.vx *= 0.9;
+				this.vy *= 0.9;
+			}
 		}
 
 	};
@@ -53,7 +59,7 @@ define(['sprite', 'random'], function(sprite, r) {
 			var vx = this.x - x;
 			var vy = this.y - y;
 			var div = Math.max(x, y);
-			var pow = 500/d;
+			var pow = 1300/d;
 			this.vx = vx * pow / div;
 			this.vy = vy * pow / div;
 		}
