@@ -13,10 +13,11 @@ define([], function() {
 	};
 	
 	Sprite.prototype.render = function(ctx, x, y) {
+		//var xs = (1 - this.scale); // s: 1 => xs: 0, s: 2 => xs: -0.5, s: 0.5 => xs: 0.5 
 		ctx.drawImage(this.atlas, 
 			this.idx*gridUnit, this.idy*gridUnit, 
 			this.w, this.h, 
-			x, y, 
+			x + (this.w * (1-this.scale)), y + (this.h * (1-this.scale)),
 			this.w*this.scale, this.h*this.scale);
 	};
 
