@@ -128,6 +128,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 					sprite.isDead = false;
 				}
 				gameUi.isGameOver = false;
+				gameUi.reset();
 				ui.setScore(0);
 			}
 		});
