@@ -90,7 +90,9 @@ define(['text'], function(text) {
 
 		if (!this.isGameOver) {
 			text.write(ctx, 'Score: ' + visibleScore, 10, 10);
-			text.write(ctx, 'High Score: ' + this.highScore, 10, 28);
+			if (this.highScore !== 0) {
+				text.write(ctx, 'High Score: ' + this.highScore, 10, 28);				
+			}
 		}
 		else {
 			w = ctx.canvas.width;

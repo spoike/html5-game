@@ -38,7 +38,7 @@ define(['sprite', 'random', 'systems/gore_field'], function(sprite, r, gore_fiel
 	};
 
 
-	var maxSpeed = 3;
+	var maxSpeed = 2.4;
 	var retardation = 0.98;
 	Happy.prototype.update = function() {
 		if (this.x == 380 || this.x < 1) { this.vx *= -1; }
