@@ -1,4 +1,4 @@
-define(['sprite', 'random'], function(sprite, r) {
+define(['sprite', 'random', 'systems/gore_field'], function(sprite, r, gore_field) {
 
 	var exports = {};
 
@@ -37,6 +37,9 @@ define(['sprite', 'random'], function(sprite, r) {
 		this.vy = getRandomVelocity();
 	};
 
+
+	var maxSpeed = 3;
+	var retardation = 0.98;
 	Happy.prototype.update = function() {
 		if (this.x == 380 || this.x < 1) { this.vx *= -1; }
 		if (this.y == 380 || this.y < 1) { this.vy *= -1; }
@@ -45,9 +48,9 @@ define(['sprite', 'random'], function(sprite, r) {
 			this.y = (this.y+this.vy).clamp(0, 380);
 
 			d = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-			if (d > 3) {
-				this.vx *= 0.9;
-				this.vy *= 0.9;
+			if (d > maxSpeed) {
+				this.vx *= retardation;
+				this.vy *= retardation;
 			}
 		}
 
@@ -55,8 +58,9 @@ define(['sprite', 'random'], function(sprite, r) {
 
 	var startSquishScale = 1.4;
 	var stepSpreadMultiplier = 2;
-	var goreAmount = 1;	
+	var goreAmount = 2;	
 	var spreadEndStep = 2;
+	var squishScale = 0.5;
 	Happy.prototype.renderGore = function(ctx, step) {
 		this.squished.render(ctx, this.x + (this.vx*step*stepSpreadMultiplier), this.y + (this.vy*step*stepSpreadMultiplier));
 		if (step <= spreadEndStep) {
@@ -64,7 +68,7 @@ define(['sprite', 'random'], function(sprite, r) {
 			this.squished.render(ctx, this.x - (this.vx*step*stepSpreadMultiplier), this.y + (this.vy*step*stepSpreadMultiplier));
 		}
 		if (step <= goreAmount) {
-			this.squished.scale *= 0.8;
+			this.squished.scale *= squishScale;
 			this.renderGore(ctx, step+1);
 		}
 	};
@@ -72,10 +76,6 @@ define(['sprite', 'random'], function(sprite, r) {
 	Happy.prototype.render = function(ctx) {
 		if (!this.isDead) {
 			this.happy.render(ctx, this.x, this.y);
-		} else {
-			this.squished.scale = startSquishScale;
-			this.squished.render(ctx, this.x, this.y);
-			this.renderGore(ctx, 1);
 		}
 	};
 
@@ -85,6 +85,11 @@ define(['sprite', 'random'], function(sprite, r) {
 		if (d <= hitDiameter) {
 			this.impact(x, y);
 			this.isDead = true;
+			gore_field.draw(function(bufferCtx) {
+				this.squished.scale = startSquishScale;
+				this.squished.render(bufferCtx, this.x, this.y);
+				this.renderGore(bufferCtx, 1);
+			}.bind(this));
 		}
 	};
 
