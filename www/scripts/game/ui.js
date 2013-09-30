@@ -91,7 +91,7 @@ define(['text'], function(text) {
 		if (!this.isGameOver) {
 			text.write(ctx, 'Score: ' + visibleScore, 10, 10);
 			if (this.highScore !== 0) {
-				text.write(ctx, 'High Score: ' + this.highScore, 10, 28);				
+				text.write(ctx, 'High Score: ' + this.highScore, 10, 28, 0.6);
 			}
 		}
 		else {
@@ -100,9 +100,9 @@ define(['text'], function(text) {
 			ctx.fillStyle = "rgba(0,0,0,0.4)";
 			ctx.fillRect(0, 0, w, h);
 			beginy = h/2-24;
-			text.writeCenter(ctx, 'YOU WIN!', beginy);
+			var wintext = this.highScore >= score ? 'YOU WIN!' : 'YOU GOT HIGHSCORE';
+			text.writeCenter(ctx, wintext, beginy);
 			text.writeCenter(ctx, 'Your score: ' + score, beginy + 18);
-
 		}
 
 		ctx.restore();

@@ -8,8 +8,9 @@ define([], function() {
 		img = atlas;
 	};
 
-	exports.write = function(ctx, str, x, y) {
+	exports.write = function(ctx, str, x, y, scale) {
 		var i, c, cx, cy;
+		scale = scale || 1;
 		for (i = 0; i < str.length; i++) {
 			c = str.charCodeAt(i);
 			cx = c%16;
@@ -17,8 +18,8 @@ define([], function() {
 			ctx.drawImage(img,
 				cx*16, (16+cy)*16,
 				16,16,
-				x+(i*16),y,
-				16,16);
+				x+(i*(16*scale)),y,
+				16*scale,16*scale);
 		};
 	};
 
