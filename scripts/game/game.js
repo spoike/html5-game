@@ -1,4 +1,4 @@
-define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', 'ui', 'text'], function(r, preloader, objs, backgrounds, cursors, ui, text) {
+define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', 'ui', 'text', 'systems/gore_field'], function(r, preloader, objs, backgrounds, cursors, ui, text, gore_field) {
 	
 	// requestAnimationFrame polyfill
 	(function() {
@@ -36,6 +36,8 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 
 		/* Draw map */
 		bg.render(ctx);
+
+		gore_field.render(ctx);
 
 		for (i = 0; i < sprites.length; i++) {
 			sprite = sprites[i];
@@ -77,6 +79,7 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 		
 		// Create background
 		bg = backgrounds.create(imgs[0]);
+		gore_field.init(canvas.width, canvas.height);
 		// Create sprites
 		for (i = 0; i < happyFaceAmount; i++) {
 			var s = new objs.Happy(imgs[0]);
@@ -119,11 +122,13 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 			}
 
 			if (gameUi.isGameOver) {
+				gore_field.reset();
 				for(i = 0; i < sprites.length; i++) {
 					sprite = sprites[i];
 					sprite.isDead = false;
 				}
 				gameUi.isGameOver = false;
+				gameUi.reset();
 				ui.setScore(0);
 			}
 		});

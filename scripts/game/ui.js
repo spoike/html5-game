@@ -5,6 +5,27 @@ define(['text'], function(text) {
 	var UI = function(atlas) {
 		this.atlas = atlas;
 		this.isGameOver = false;
+		this.highScore = 0;
+		this.loadHighScore();
+	};
+
+	var highScoreKey = 'highscore';
+	UI.prototype.loadHighScore = function() {
+		if (localStorage) {
+			var score = localStorage.getItem(highScoreKey);
+			if (score !== null) {
+				return this.highScore = score;
+			};
+		}
+		return 0;
+	};
+	UI.prototype.saveHighScore = function(newScore) {
+		if (localStorage) {
+			if (newScore > this.highScore) {
+				this.highScore = newScore;
+				localStorage.setItem(highScoreKey, this.highScore);
+			}
+		}
 	};
 
 	var score = 0;
@@ -69,6 +90,9 @@ define(['text'], function(text) {
 
 		if (!this.isGameOver) {
 			text.write(ctx, 'Score: ' + visibleScore, 10, 10);
+			if (this.highScore !== 0) {
+				text.write(ctx, 'High Score: ' + this.highScore, 10, 28, 0.6);
+			}
 		}
 		else {
 			w = ctx.canvas.width;
@@ -76,12 +100,18 @@ define(['text'], function(text) {
 			ctx.fillStyle = "rgba(0,0,0,0.4)";
 			ctx.fillRect(0, 0, w, h);
 			beginy = h/2-24;
-			text.writeCenter(ctx, 'YOU WIN!', beginy);
+			var wintext = this.highScore >= score ? 'YOU WIN!' : 'YOU GOT HIGHSCORE';
+			text.writeCenter(ctx, wintext, beginy);
 			text.writeCenter(ctx, 'Your score: ' + score, beginy + 18);
-
 		}
 
 		ctx.restore();
+	};
+
+	UI.prototype.reset = function() {
+		this.saveHighScore(score);
+		score = 0;
+		visibleScore = 0;
 	};
 
 	exports.setScore = function(s) {
@@ -100,8 +130,9 @@ define(['text'], function(text) {
 		hits.push([x, y, 0]);
 	};
 
+	var instance;
 	exports.create = function(atlas) {
-		return new UI(atlas);
+		return instance = new UI(atlas);
 	};
  
 	return exports;
