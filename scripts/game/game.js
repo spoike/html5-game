@@ -94,8 +94,8 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 		// Set up user events
 		var canvas = document.getElementById('game');
 		canvas.addEventListener('click', function(evt) {
-			var x = evt.offsetX || (evt.pageX - canvas.offsetLeft);
-			var y = evt.offsetY || (evt.pageY - canvas.offsetTop);
+			var x = evt.offsetX || (evt.layerX);
+			var y = evt.offsetY || (evt.layerY);
 			var sprite;
 			var score = 0;
 			
@@ -143,8 +143,8 @@ define(['random', 'preloader', 'objs/happy', 'objs/background', 'objs/cursor', '
 
 		canvas.addEventListener('mousemove', function(evt) {
 			cursor.isVisible = true;
-			var x = evt.offsetX || (evt.pageX - canvas.offsetLeft);
-			var y = evt.offsetY || (evt.pageY - canvas.offsetTop);
+			var x = evt.offsetX || (evt.layerX);
+			var y = evt.offsetY || (evt.layerY);
 
 			cursor.x = x;
 			cursor.y = y;
