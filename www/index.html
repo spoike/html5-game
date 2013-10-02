@@ -17,6 +17,14 @@
                 box-shadow: 0 0 25px #8dc63f;
                 background-color: #8dc63f;
             }
+            .game {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
         </style>
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/main.css">
@@ -42,8 +50,8 @@
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-lg-12" style="text-align: center;">
-          <canvas id="game" width="396" height="396" style="cursor: none; position: relative;">
+        <div class="col-lg-12 game" style="text-align: center;">
+          <canvas id="game" width="396" height="396" style="cursor: none; position: relative;" onselectstart="return false;" onmousedown='return false;' >
             <p>Your browser doesn't support canvas.</p>
           </canvas>
         </div>
